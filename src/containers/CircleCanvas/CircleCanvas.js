@@ -2,7 +2,6 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 
 import CircularSector from '../../components/CircularSector/CircularSector';
-import { NoToneMapping } from 'three';
 
 const mainCircleRadius = 1;
 const maxGrade = 10;
@@ -38,7 +37,7 @@ const data = [
 export const CircleCanvas = () => {
   return (
     <>
-      <Canvas camera={{ fov: 25 }}>
+      <Canvas camera={{ fov: 30 }}>
         {data.map((element, idx) => {
           return (
             <CircularSector
@@ -49,6 +48,7 @@ export const CircleCanvas = () => {
               color={element.color}
               dataLen={data.length}
               maxGrade={maxGrade}
+              category={element.category}
             />
           );
         })}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Circle, Text, QuadraticBezierLine, Line } from '@react-three/drei';
+import { useSpring, a } from '@react-spring/three';
 
 const getGradeRadius = (newGrade, radius, maxGrade) => {
 	const newGradeRadius = newGrade * radius / maxGrade;
@@ -85,6 +86,12 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 	const angleLength = 2 * Math.PI / dataLen;
 	const startAngle = angleLength * idx;
 
+	const props = useSpring({
+		scale: hoovering
+			? [ gradeHooveringRadius / radius, gradeHooveringRadius / radius, 1 ]
+			: [ newGradeRadius / radius, newGradeRadius / radius, 1 ]
+	});
+
 	return (
 		<group>
 			<mesh
@@ -102,40 +109,30 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 				</Circle>
 			</mesh>
 
-			<mesh>
-				<Circle args={[ hoovering ? gradeHooveringRadius : newGradeRadius, segments, startAngle, angleLength ]}>
+			<a.mesh scale={props.scale}>
+				<Circle args={[ radius, segments, startAngle, angleLength ]}>
 					<meshBasicMaterial attach='material' color={color} />
 				</Circle>
-			</mesh>
-			<mesh>
 				<QuadraticBezierLine
-					start={getBezierStart(startAngle, angleLength, hoovering ? gradeHooveringRadius : newGradeRadius)} // Starting point
-					end={getBezierEnd(startAngle, angleLength, hoovering ? gradeHooveringRadius : newGradeRadius)} // Ending point
-					mid={getBezierMid(startAngle, angleLength, hoovering ? gradeHooveringRadius : newGradeRadius)} // Optional control point
+					start={getBezierStart(startAngle, angleLength, radius)} // Starting point
+					end={getBezierEnd(startAngle, angleLength, radius)} // Ending point
+					mid={getBezierMid(startAngle, angleLength, radius)} // Optional control point
 					color='white' // Default
 					lineWidth={1} // In pixels (default)
 					dashed={false} // Default
 				/>
 				<Line
-					points={[
-						[ 0, 0, 0 ],
-
-						getBezierStart(startAngle, angleLength, hoovering ? gradeHooveringRadius : newGradeRadius)
-					]}
+					points={[ [ 0, 0, 0 ], getBezierStart(startAngle, angleLength, radius) ]}
 					lineWidth={1}
 					color='white' // Default
 				/>
 
 				<Line
-					points={[
-						[ 0, 0, 0 ],
-
-						getBezierEnd(startAngle, angleLength, hoovering ? gradeHooveringRadius : newGradeRadius)
-					]}
+					points={[ [ 0, 0, 0 ], getBezierEnd(startAngle, angleLength, radius) ]}
 					lineWidth={1}
 					color='white' // Default
 				/>
-			</mesh>
+			</a.mesh>
 
 			<Text
 				position={getGradeTextPosition(newGradeRadius, startAngle, angleLength, radius, newGrade)}

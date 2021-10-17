@@ -2,7 +2,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 
 import CircularSector from '../../components/CircularSector/CircularSector';
-
+import * as THREE from "three";
 const mainCircleRadius = 1;
 const maxGrade = 10;
 
@@ -37,7 +37,7 @@ const data = [
 export const CircleCanvas = () => {
   return (
     <>
-      <Canvas camera={{ fov: 30 }}>
+      <Canvas  onCreated={({ gl }) => { gl.toneMapping = THREE.NoToneMapping }} camera={{ fov: 30 }}>
         {data.map((element, idx) => {
           return (
             <CircularSector

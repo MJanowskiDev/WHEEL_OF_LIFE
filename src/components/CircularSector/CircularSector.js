@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Circle, Text } from '@react-three/drei';
+import { Circle, Text, QuadraticBezierLine } from '@react-three/drei';
 
 const getGradeRadius = (newGrade, radius, maxGrade) => {
   const newGradeRadius = (newGrade * radius) / maxGrade;
@@ -12,18 +12,27 @@ const getGrade = (v, radius, maxGrade) => {
   return newGrade;
 };
 
+const getMiddleAngle = (startAngle, angleLength) => {
+  return startAngle + angleLength / 2;
+};
+
 const getCategoryTextRotation = (startAngle, angleLength) => {
-  const middleAngle = startAngle + angleLength / 2;
+  const middleAngle = getMiddleAngle(startAngle, angleLength);
   const dir = middleAngle > Math.PI ? 1 : -1;
   return [0, 0, (dir * Math.PI) / 2 + startAngle + angleLength / 2];
 };
 
-const getCategoryTextPosition = (radius, startAngle, angleLength) => {
-  const middleAngle = startAngle + angleLength / 2;
+const getCategoryTextPosition = (
+  radius,
+  startAngle,
+  angleLength,
+  textOffset = 1.15
+) => {
+  const middleAngle = getMiddleAngle(startAngle, angleLength);
 
   return [
-    1.15 * radius * Math.cos(middleAngle),
-    1.15 * radius * Math.sin(middleAngle),
+    textOffset * radius * Math.cos(middleAngle),
+    textOffset * radius * Math.sin(middleAngle),
     0,
   ];
 };
@@ -35,7 +44,7 @@ const getGradeTextPosition = (
   radius,
   grade
 ) => {
-  const middleAngle = startAngle + angleLength / 2;
+  const middleAngle = getMiddleAngle(startAngle, angleLength);
   const dir = middleAngle > Math.PI ? 1 : -1;
   const coef = grade >= 2 ? -radius * 0.1 : radius * 0.1;
   const coefX = dir * coef * Math.cos(middleAngle);
@@ -43,6 +52,43 @@ const getGradeTextPosition = (
   return [
     newGradeRadius * Math.cos(middleAngle) + dir * coefX,
     newGradeRadius * Math.sin(middleAngle) + dir * coefY,
+    0,
+  ];
+};
+
+const getSmallCircleTranslation = (
+  startAngle,
+  angleLength,
+  radius,
+  offsetCoef = 0.0
+) => {
+  const middleAngle = getMiddleAngle(startAngle, angleLength);
+  return [
+    radius * offsetCoef * Math.cos(middleAngle),
+    radius * offsetCoef * Math.sin(middleAngle),
+    0,
+  ];
+};
+
+const getBezierStart = (startAngle, angleLength, radius) => {
+  return [radius * Math.cos(startAngle), radius * Math.sin(startAngle), 0];
+};
+
+const getBezierMid = (startAngle, angleLength, radius) => {
+  const middleAngle = getMiddleAngle(startAngle, angleLength);
+  const newRadius = 2 * radius - radius * Math.cos(angleLength / 2);
+
+  return [
+    newRadius * Math.cos(middleAngle),
+    newRadius * Math.sin(middleAngle),
+    0,
+  ];
+};
+
+const getBezierEnd = (startAngle, angleLength, radius) => {
+  return [
+    radius * Math.cos(startAngle + angleLength),
+    radius * Math.sin(startAngle + angleLength),
     0,
   ];
 };
@@ -103,13 +149,17 @@ const CircularSector = ({
           setHoovering(false);
         }}
       >
-        <Circle args={[radius, segments, startAngle, angleLength]}>
+        <Circle
+          position={getSmallCircleTranslation(startAngle, angleLength, radius)}
+          args={[radius, segments, startAngle, angleLength]}
+        >
           <meshBasicMaterial attach='material' color={color} opacity={0.7} />
         </Circle>
       </mesh>
 
       <mesh>
         <Circle
+          position={getSmallCircleTranslation(startAngle, angleLength, radius)}
           args={[
             hoovering ? gradeHooveringRadius : newGradeRadius,
             segments,
@@ -119,6 +169,28 @@ const CircularSector = ({
         >
           <meshBasicMaterial attach='material' color={color} />
         </Circle>
+      </mesh>
+      <mesh>
+        <QuadraticBezierLine
+          start={getBezierStart(
+            startAngle,
+            angleLength,
+            hoovering ? gradeHooveringRadius : newGradeRadius
+          )} // Starting point
+          end={getBezierEnd(
+            startAngle,
+            angleLength,
+            hoovering ? gradeHooveringRadius : newGradeRadius
+          )} // Ending point
+          mid={getBezierMid(
+            startAngle,
+            angleLength,
+            hoovering ? gradeHooveringRadius : newGradeRadius
+          )} // Optional control point
+          color='white' // Default
+          lineWidth={4} // In pixels (default)
+          dashed={false} // Default
+        />
       </mesh>
 
       <Text

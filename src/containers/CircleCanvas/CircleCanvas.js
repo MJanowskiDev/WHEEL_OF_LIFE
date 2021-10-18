@@ -36,8 +36,14 @@ const data = [
 
 export const CircleCanvas = () => {
   return (
-    <>
-      <Canvas  onCreated={({ gl }) => { gl.toneMapping = THREE.NoToneMapping }} camera={{ fov: 30 }}>
+    
+      <Canvas  gl={{ antialias: false }} onCreated={({ gl }) => { 
+        gl.toneMapping = THREE.NoToneMapping; 
+        gl.setPixelRatio(window.devicePixelRatio * 4);
+        gl.alpha= true
+        gl.antialias= true
+      
+        }} camera={{ fov: 30 }}>
         {data.map((element, idx) => {
           return (
             <CircularSector
@@ -53,6 +59,6 @@ export const CircleCanvas = () => {
           );
         })}
       </Canvas>
-    </>
+    
   );
 };

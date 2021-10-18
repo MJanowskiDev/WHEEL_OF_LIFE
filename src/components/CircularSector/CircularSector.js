@@ -71,16 +71,16 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 
 	const pointerMove = (event) => {
 		const gradeHoovering = getGrade(event.point, radius, maxGrade);
-
 		const gradeRadiusHoovering = getGradeRadius(gradeHoovering, radius, maxGrade);
-
 		setNewGradeHoovering(gradeHoovering);
 		setGradeHooveringRadius(gradeRadiusHoovering);
 	};
 
-	const pointerClick = () => {
+	const pointerClick = (event) => {
+		const gradeHoovering = getGrade(event.point, radius, maxGrade);
+		const gradeHooveringRadius = getGradeRadius(gradeHoovering, radius, maxGrade);
 		setNewGradeRadius(gradeHooveringRadius);
-		setNewGrade(newGradeHoovering);
+		setNewGrade(gradeHoovering);
 	};
 
 	const angleLength = 2 * Math.PI / dataLen;
@@ -139,7 +139,7 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 				rotation={getCategoryTextRotation(startAngle, angleLength)}
 				color='black'
 			>
-				{newGrade}
+				{hoovering ? newGradeHoovering :newGrade}
 			</Text>
 
 			<Text

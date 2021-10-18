@@ -74,6 +74,7 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 		const gradeRadiusHoovering = getGradeRadius(gradeHoovering, radius, maxGrade);
 		setNewGradeHoovering(gradeHoovering);
 		setGradeHooveringRadius(gradeRadiusHoovering);
+		setHoovering(true);
 	};
 
 	const pointerClick = (event) => {
@@ -81,6 +82,9 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 		const gradeHooveringRadius = getGradeRadius(gradeHoovering, radius, maxGrade);
 		setNewGradeRadius(gradeHooveringRadius);
 		setNewGrade(gradeHoovering);
+		setNewGradeHoovering(gradeHoovering);
+		setGradeHooveringRadius(gradeHooveringRadius);
+		setHoovering(false);
 	};
 
 	const angleLength = 2 * Math.PI / dataLen;
@@ -89,7 +93,10 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 	const props = useSpring({
 		scale: hoovering
 			? [ gradeHooveringRadius / radius, gradeHooveringRadius / radius, 1 ]
-			: [ newGradeRadius / radius, newGradeRadius / radius, 1 ]
+			: [ newGradeRadius / radius, newGradeRadius / radius, 1 ],
+		position: hoovering
+			? getGradeTextPosition(gradeHooveringRadius, startAngle, angleLength, radius, newGradeHoovering)
+			: getGradeTextPosition(newGradeRadius, startAngle, angleLength, radius, newGrade)
 	});
 
 	return (
@@ -113,6 +120,7 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 				<Circle args={[ radius, segments, startAngle, angleLength ]}>
 					<meshBasicMaterial attach='material' color={color} />
 				</Circle>
+
 				<QuadraticBezierLine
 					start={getBezierStart(startAngle, angleLength, radius)} // Starting point
 					end={getBezierEnd(startAngle, angleLength, radius)} // Ending point
@@ -134,13 +142,14 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 				/>
 			</a.mesh>
 
-			<Text
-				position={getGradeTextPosition(newGradeRadius, startAngle, angleLength, radius, newGrade)}
-				rotation={getCategoryTextRotation(startAngle, angleLength)}
-				color='black'
-			>
-				{hoovering ? newGradeHoovering :newGrade}
-			</Text>
+			<a.mesh position={props.position}>
+				<Text
+					rotation={getCategoryTextRotation(startAngle, angleLength)}
+					color={!hoovering || newGradeHoovering === newGrade ? 'black' : 'white'}
+				>
+					{hoovering ? newGradeHoovering : newGrade}
+				</Text>
+			</a.mesh>
 
 			<Text
 				position={getCategoryTextPosition(radius, startAngle, angleLength)}

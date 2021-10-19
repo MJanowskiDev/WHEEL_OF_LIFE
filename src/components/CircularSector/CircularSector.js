@@ -35,11 +35,7 @@ const getGradeTextPosition = (newGradeRadius, startAngle, angleLength, radius, g
 	const coef = grade >= 2 ? -radius * 0.1 : radius * 0.1;
 	const coefX = dir * coef * Math.cos(middleAngle);
 	const coefY = dir * coef * Math.sin(middleAngle);
-	return [
-		newGradeRadius * Math.cos(middleAngle) + dir * coefX,
-		newGradeRadius * Math.sin(middleAngle) + dir * coefY,
-		0
-	];
+	return [ newGradeRadius * Math.cos(middleAngle) + dir * coefX, newGradeRadius * Math.sin(middleAngle) + dir * coefY, 0 ];
 };
 
 const getBezierStart = (startAngle, angleLength, radius) => {
@@ -112,33 +108,33 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 				}}
 			>
 				<Circle args={[ radius, segments, startAngle, angleLength ]}>
-					<meshBasicMaterial attach='material' color={color} opacity={0.6} />
+					<meshBasicMaterial attach="material" color={color} opacity={0.6} />
 				</Circle>
 			</mesh>
 
 			<a.mesh scale={props.scale}>
 				<Circle args={[ radius, segments, startAngle, angleLength ]}>
-					<meshBasicMaterial attach='material' color={color} />
+					<meshBasicMaterial attach="material" color={color} />
 				</Circle>
 
 				<QuadraticBezierLine
 					start={getBezierStart(startAngle, angleLength, radius)} // Starting point
 					end={getBezierEnd(startAngle, angleLength, radius)} // Ending point
 					mid={getBezierMid(startAngle, angleLength, radius)} // Optional control point
-					color='white' // Default
+					color="white" // Default
 					lineWidth={1} // In pixels (default)
 					dashed={false} // Default
 				/>
 				<Line
 					points={[ [ 0, 0, 0 ], getBezierStart(startAngle, angleLength, radius) ]}
 					lineWidth={1}
-					color='white' // Default
+					color="white" // Default
 				/>
 
 				<Line
 					points={[ [ 0, 0, 0 ], getBezierEnd(startAngle, angleLength, radius) ]}
 					lineWidth={1}
-					color='white' // Default
+					color="white" // Default
 				/>
 			</a.mesh>
 
@@ -154,7 +150,7 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 			<Text
 				position={getCategoryTextPosition(radius, startAngle, angleLength)}
 				rotation={getCategoryTextRotation(startAngle, angleLength)}
-				color='black'
+				color="black"
 			>
 				{category}
 			</Text>

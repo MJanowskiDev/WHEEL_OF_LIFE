@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/WHEEL_OF_LIFE/static/css/main.5ee1f43d.chunk.css",
-    "main.js": "/WHEEL_OF_LIFE/static/js/main.8b3f29c6.chunk.js",
-    "main.js.map": "/WHEEL_OF_LIFE/static/js/main.8b3f29c6.chunk.js.map",
+    "main.js": "/WHEEL_OF_LIFE/static/js/main.d5f4602c.chunk.js",
+    "main.js.map": "/WHEEL_OF_LIFE/static/js/main.d5f4602c.chunk.js.map",
     "runtime-main.js": "/WHEEL_OF_LIFE/static/js/runtime-main.4628e188.js",
     "runtime-main.js.map": "/WHEEL_OF_LIFE/static/js/runtime-main.4628e188.js.map",
     "static/js/2.890d58a6.chunk.js": "/WHEEL_OF_LIFE/static/js/2.890d58a6.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.4628e188.js",
     "static/js/2.890d58a6.chunk.js",
     "static/css/main.5ee1f43d.chunk.css",
-    "static/js/main.8b3f29c6.chunk.js"
+    "static/js/main.d5f4602c.chunk.js"
   ]
 }

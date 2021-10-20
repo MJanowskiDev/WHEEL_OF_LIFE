@@ -40,7 +40,7 @@ export const CircleCanvas = () => {
 			gl={{ antialias: false }}
 			onCreated={({ gl }) => {
 				gl.toneMapping = THREE.NoToneMapping;
-				gl.setPixelRatio(window.devicePixelRatio * 4);
+				gl.setPixelRatio(window.devicePixelRatio * 2);
 				gl.alpha = true;
 				gl.antialias = true;
 			}}

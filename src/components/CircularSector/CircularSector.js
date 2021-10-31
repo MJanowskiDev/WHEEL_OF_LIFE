@@ -1,62 +1,24 @@
 import React, { useState } from 'react';
-import { Circle, Text, QuadraticBezierLine, Line } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
 
-const getGradeRadius = (newGrade, radius, maxGrade) => {
-	const newGradeRadius = newGrade * radius / maxGrade;
-	return newGradeRadius;
-};
+import Background from './Background';
+import Border from './Border';
+import Sector from './Sector';
 
-const getGrade = (v, radius, maxGrade) => {
-	const distance = Math.sqrt(v.x ** 2 + v.y ** 2);
-	const newGrade = Math.round(distance * maxGrade / radius);
-	return newGrade;
-};
+import {
+	getGradeTextPosition,
+	getGradeRadius,
+	getGrade,
+	getCategoryTextRotation,
+	getCategoryTextPosition,
+	getScale,
+	arcSegments
+} from './utils';
 
-const getMiddleAngle = (startAngle, angleLength) => {
-	return startAngle + angleLength / 2;
-};
+import { colors } from './theme';
 
-const getCategoryTextRotation = (startAngle, angleLength) => {
-	const middleAngle = getMiddleAngle(startAngle, angleLength);
-	const dir = middleAngle > Math.PI ? 1 : -1;
-	return [ 0, 0, dir * Math.PI / 2 + startAngle + angleLength / 2 ];
-};
-
-const getCategoryTextPosition = (radius, startAngle, angleLength, textOffset = 1.15) => {
-	const middleAngle = getMiddleAngle(startAngle, angleLength);
-
-	return [ textOffset * radius * Math.cos(middleAngle), textOffset * radius * Math.sin(middleAngle), 0 ];
-};
-
-const getGradeTextPosition = (newGradeRadius, startAngle, angleLength, radius, grade) => {
-	const middleAngle = getMiddleAngle(startAngle, angleLength);
-	const dir = middleAngle > Math.PI ? 1 : -1;
-	const coef = grade >= 2 ? -radius * 0.1 : radius * 0.1;
-	const coefX = dir * coef * Math.cos(middleAngle);
-	const coefY = dir * coef * Math.sin(middleAngle);
-	return [ newGradeRadius * Math.cos(middleAngle) + dir * coefX, newGradeRadius * Math.sin(middleAngle) + dir * coefY, 0 ];
-};
-
-const getBezierStart = (startAngle, angleLength, radius) => {
-	return [ radius * Math.cos(startAngle), radius * Math.sin(startAngle), 0 ];
-};
-
-const getBezierMid = (startAngle, angleLength, radius) => {
-	const r = radius + radius * 0.01;
-	const middleAngle = getMiddleAngle(startAngle, angleLength);
-	const newRadius = 2 * r - r * Math.cos(angleLength / 2);
-
-	return [ newRadius * Math.cos(middleAngle), newRadius * Math.sin(middleAngle), 0 ];
-};
-
-const getBezierEnd = (startAngle, angleLength, radius) => {
-	return [ radius * Math.cos(startAngle + angleLength), radius * Math.sin(startAngle + angleLength), 0 ];
-};
-
-const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category }) => {
-	const segments = 100;
-
+const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category, segments = arcSegments }) => {
 	const [ newGradeRadius, setNewGradeRadius ] = useState(getGradeRadius(grade, radius, maxGrade));
 	const [ gradeHooveringRadius, setGradeHooveringRadius ] = useState(getGradeRadius(grade, radius, maxGrade));
 
@@ -83,12 +45,20 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 		setHoovering(false);
 	};
 
+	const pointerEnterHandle = () => {
+		setHoovering(true);
+	};
+
+	const pointerLeaveHandle = () => {
+		setHoovering(false);
+	};
+
 	const angleLength = 2 * Math.PI / dataLen;
 	const startAngle = angleLength * idx;
 
 	const props = useSpring({
 		scale: hoovering
-			? [ gradeHooveringRadius / radius, gradeHooveringRadius / radius, 1 ]
+			? [ getScale(gradeHooveringRadius, radius), getScale(gradeHooveringRadius, radius), 1 ]
 			: [ newGradeRadius / radius, newGradeRadius / radius, 1 ],
 		position: hoovering
 			? getGradeTextPosition(gradeHooveringRadius, startAngle, angleLength, radius, newGradeHoovering)
@@ -100,48 +70,21 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 			<mesh
 				onPointerMove={pointerMove}
 				onClick={pointerClick}
-				onPointerEnter={() => {
-					setHoovering(true);
-				}}
-				onPointerLeave={() => {
-					setHoovering(false);
-				}}
+				onPointerEnter={pointerEnterHandle}
+				onPointerLeave={pointerLeaveHandle}
 			>
-				<Circle args={[ radius, segments, startAngle, angleLength ]}>
-					<meshBasicMaterial attach="material" color={color} opacity={0.6} />
-				</Circle>
+				<Background color={color} opacity={0.6} args={[ radius, segments, startAngle, angleLength ]} />
 			</mesh>
 
 			<a.mesh scale={props.scale}>
-				<Circle args={[ radius, segments, startAngle, angleLength ]}>
-					<meshBasicMaterial attach="material" color={color} />
-				</Circle>
-
-				<QuadraticBezierLine
-					start={getBezierStart(startAngle, angleLength, radius)} // Starting point
-					end={getBezierEnd(startAngle, angleLength, radius)} // Ending point
-					mid={getBezierMid(startAngle, angleLength, radius)} // Optional control point
-					color="white" // Default
-					lineWidth={1} // In pixels (default)
-					dashed={false} // Default
-				/>
-				<Line
-					points={[ [ 0, 0, 0 ], getBezierStart(startAngle, angleLength, radius) ]}
-					lineWidth={1}
-					color="white" // Default
-				/>
-
-				<Line
-					points={[ [ 0, 0, 0 ], getBezierEnd(startAngle, angleLength, radius) ]}
-					lineWidth={1}
-					color="white" // Default
-				/>
+				<Sector args={[ radius, segments, startAngle, angleLength ]} color={color} opacity={1} />
+				<Border startAngle={startAngle} angleLength={angleLength} radius={radius} />
 			</a.mesh>
 
 			<a.mesh position={props.position}>
 				<Text
 					rotation={getCategoryTextRotation(startAngle, angleLength)}
-					color={!hoovering || newGradeHoovering === newGrade ? 'black' : 'white'}
+					color={!hoovering || newGradeHoovering === newGrade ? colors.default : colors.active}
 				>
 					{hoovering ? newGradeHoovering : newGrade}
 				</Text>
@@ -150,7 +93,7 @@ const CircularSector = ({ radius, color, maxGrade, dataLen, idx, grade, category
 			<Text
 				position={getCategoryTextPosition(radius, startAngle, angleLength)}
 				rotation={getCategoryTextRotation(startAngle, angleLength)}
-				color="black"
+				color={colors.default}
 			>
 				{category}
 			</Text>

@@ -2,44 +2,14 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 
 import CircularSector from 'components/CircularSector';
-import * as THREE from 'three';
-const mainCircleRadius = 1;
-const maxGrade = 10;
+import { NoToneMapping } from 'three';
 
-const data = [
-	{
-		category: 'Carrer',
-		grade: '5',
-		color: '#59F316'
-	},
-	{
-		category: 'Environment',
-		grade: '8',
-		color: '#EF767A'
-	},
-	{
-		category: 'Life Purpose',
-		grade: '7',
-		color: '#7D7ABC'
-	},
-	{
-		category: 'Nutrition',
-		grade: '4',
-		color: '#3a86ff'
-	},
-	{
-		category: 'Self Esteem',
-		grade: '1',
-		color: '#FFE347'
-	}
-];
-
-const CircleCanvas = () => {
+const CircleCanvas = ({ data, mainCircleRadius = 1, maxGrade = 10 }) => {
 	return (
 		<Canvas
 			gl={{ antialias: false }}
 			onCreated={({ gl }) => {
-				gl.toneMapping = THREE.NoToneMapping;
+				gl.toneMapping = NoToneMapping;
 				gl.setPixelRatio(window.devicePixelRatio * 2);
 				gl.alpha = true;
 				gl.antialias = true;

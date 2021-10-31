@@ -1,7 +1,7 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 
-import CircularSector from '../../components/CircularSector/CircularSector';
+import CircularSector from 'components/CircularSector';
 import * as THREE from 'three';
 const mainCircleRadius = 1;
 const maxGrade = 10;
@@ -34,7 +34,7 @@ const data = [
 	}
 ];
 
-export const CircleCanvas = () => {
+const CircleCanvas = () => {
 	return (
 		<Canvas
 			gl={{ antialias: false }}
@@ -63,3 +63,5 @@ export const CircleCanvas = () => {
 		</Canvas>
 	);
 };
+
+export default CircleCanvas;

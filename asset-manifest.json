@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/WHEEL_OF_LIFE/static/css/main.5ee1f43d.chunk.css",
-    "main.js": "/WHEEL_OF_LIFE/static/js/main.d5f4602c.chunk.js",
-    "main.js.map": "/WHEEL_OF_LIFE/static/js/main.d5f4602c.chunk.js.map",
+    "main.css": "/WHEEL_OF_LIFE/static/css/main.644919d7.chunk.css",
+    "main.js": "/WHEEL_OF_LIFE/static/js/main.d2c2334c.chunk.js",
+    "main.js.map": "/WHEEL_OF_LIFE/static/js/main.d2c2334c.chunk.js.map",
     "runtime-main.js": "/WHEEL_OF_LIFE/static/js/runtime-main.4628e188.js",
     "runtime-main.js.map": "/WHEEL_OF_LIFE/static/js/runtime-main.4628e188.js.map",
-    "static/js/2.890d58a6.chunk.js": "/WHEEL_OF_LIFE/static/js/2.890d58a6.chunk.js",
-    "static/js/2.890d58a6.chunk.js.map": "/WHEEL_OF_LIFE/static/js/2.890d58a6.chunk.js.map",
+    "static/js/2.8607c4dc.chunk.js": "/WHEEL_OF_LIFE/static/js/2.8607c4dc.chunk.js",
+    "static/js/2.8607c4dc.chunk.js.map": "/WHEEL_OF_LIFE/static/js/2.8607c4dc.chunk.js.map",
     "index.html": "/WHEEL_OF_LIFE/index.html",
-    "static/css/main.5ee1f43d.chunk.css.map": "/WHEEL_OF_LIFE/static/css/main.5ee1f43d.chunk.css.map",
-    "static/js/2.890d58a6.chunk.js.LICENSE.txt": "/WHEEL_OF_LIFE/static/js/2.890d58a6.chunk.js.LICENSE.txt"
+    "static/css/main.644919d7.chunk.css.map": "/WHEEL_OF_LIFE/static/css/main.644919d7.chunk.css.map",
+    "static/js/2.8607c4dc.chunk.js.LICENSE.txt": "/WHEEL_OF_LIFE/static/js/2.8607c4dc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.4628e188.js",
-    "static/js/2.890d58a6.chunk.js",
-    "static/css/main.5ee1f43d.chunk.css",
-    "static/js/main.d5f4602c.chunk.js"
+    "static/js/2.8607c4dc.chunk.js",
+    "static/css/main.644919d7.chunk.css",
+    "static/js/main.d2c2334c.chunk.js"
   ]
 }

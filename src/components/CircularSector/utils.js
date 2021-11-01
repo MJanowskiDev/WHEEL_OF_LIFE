@@ -54,4 +54,4 @@ export const getScale = (act, max) => {
 	return act / max;
 };
 
-export const arcSegments = 100;
+export const arcSegments = 50;

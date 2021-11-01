@@ -1,4 +1,3 @@
-import './App.css';
 import CircleCanvas from 'containers/CircleCanvas';
 
 const data = [
@@ -29,15 +28,12 @@ const data = [
 	}
 ];
 
-function App() {
+const WheelOfLife = () => {
 	return (
-		<div className="App">
-			<h1>Wheel of life</h1>
-			<div className="CircleCanvasDiv">
-				<CircleCanvas data={data} />
-			</div>
+		<div>
+			<CircleCanvas data={data} />
 		</div>
 	);
-}
+};
 
-export default App;
+export default WheelOfLife;

@@ -1,17 +1,26 @@
-import React from 'react';
 import { Canvas } from '@react-three/fiber';
-
+import { useEffect, useState } from 'react';
 import CircularSector from 'components/CircularSector';
-import { NoToneMapping } from 'three';
 
 const CircleCanvas = ({ data, mainCircleRadius = 1, maxGrade = 10 }) => {
+	const [ pixelRatio, setPixelRatio ] = useState(1);
+
+	useEffect(() => {
+		const updatePixelRatio = () => {
+			let pr = window.devicePixelRatio;
+			matchMedia(`(resolution: ${pr}dppx)`).addEventListener('change', updatePixelRatio, { once: true });
+			setPixelRatio(pr);
+		};
+
+		updatePixelRatio();
+	}, []);
+
 	return (
 		<Canvas
-			gl={{ antialias: false }}
+			style={{ width: '50vh', height: '50vh', userSelect: 'none' }}
+			dpr={pixelRatio * 4}
+			flat
 			onCreated={({ gl }) => {
-				gl.toneMapping = NoToneMapping;
-				gl.setPixelRatio(window.devicePixelRatio * 2);
-				gl.alpha = true;
 				gl.antialias = true;
 			}}
 			camera={{ fov: 30 }}

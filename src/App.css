@@ -16,7 +16,7 @@ body {
   background: #f1f4f8;
 } */
 
-.App{
+/* .App{
   width: 100vw;
   height: 100vh;
   background-color: #f1f4f8;
@@ -29,4 +29,11 @@ body {
     height: 100vw;
     background-color: #f1f4f8;
   }
+} */
+
+.CircleCanvasDiv {
+	user-select: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
